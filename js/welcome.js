@@ -1,24 +1,25 @@
-document.addEventListener("DOMContentLoaded", function () {
+function renderAuth() {
+  const user = localStorage.getItem("user");
+  const authArea = document.getElementById("authArea");
+  const userInfo = document.getElementById("userInfo");
 
-  const form = document.getElementById("loginForm");
-  if (!form) return;
+  if (!authArea) return;
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  if (user) {
+    userInfo.textContent = `Login sebagai: ${user}`;
 
-    const email = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    authArea.innerHTML = `
+      <a href="#" onclick="logout()" class="btn btn-danger">
+        Logout
+      </a>
+    `;
+  } else {
+    userInfo.textContent = "Belum login";
 
-    if (!email || !password) {
-      alert("Isi email dan password!");
-      return;
-    }
-
-    localStorage.setItem("user", email);
-
-    alert("Login berhasil!");
-
-    window.location.href = window.location.origin;
-  });
-
-});
+    authArea.innerHTML = `
+      <a onclick="goLogin()" class="btn custom-btn custom-border-btn">
+        Login
+      </a>
+    `;
+  }
+}
