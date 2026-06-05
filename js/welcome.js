@@ -10,15 +10,30 @@ function renderAuth() {
   if (!authArea) return;
 
   if (user) {
-    userInfo.textContent = `Login sebagai: ${user}`;
+    if (userInfo) {
+      userInfo.textContent = `Login sebagai: ${user}`;
+    }
 
     authArea.innerHTML = `
-      <a href="#" onclick="logout()" class="btn custom-btn custom-border-btn">
+      <a id="logoutBtn" href="#" class="btn custom-btn custom-border-btn">
         Logout
       </a>
     `;
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        localStorage.removeItem("user");
+        renderAuth();
+      });
+    }
+
   } else {
-    userInfo.textContent = "Belum login";
+    if (userInfo) {
+      userInfo.textContent = "Belum login";
+    }
 
     authArea.innerHTML = `
       <a onclick="goLogin()" class="btn custom-btn custom-border-btn">
@@ -26,11 +41,6 @@ function renderAuth() {
       </a>
     `;
   }
-}
-
-function logout() {
-  localStorage.removeItem("user");
-  renderAuth();
 }
 
 function goLogin() {
